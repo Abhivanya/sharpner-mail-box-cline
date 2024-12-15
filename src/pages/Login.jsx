@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import { Container, Card, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
-  const [enteredEmail, setEnteredEmail] = useState();
-  const [enteredPassword, setEnteredPassword] = useState();
-  const [enteredConfirmPassword, setEnteredConfirmpassword] = useState();
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const hanldeSubmit = (e) => {
     e.preventDefault();
-    if (enteredConfirmPassword === enteredPassword) {
-      alert("Both password are diffrent");
-    }
 
     fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBgJdxOctDgkNgtoJPXFU1mTJsO4GuMGmM",
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBgJdxOctDgkNgtoJPXFU1mTJsO4GuMGmM",
       {
         method: "POST",
         body: JSON.stringify({
@@ -29,12 +27,14 @@ function Signup() {
     )
       .then((response) => response.json())
       .then((res) => {
+        console.log(res);
         if (res.error) {
           throw new Error(res.error);
         }
         console.log(res.email);
-        alert("Singup successfully");
+        alert("Login successfully");
         console.log(res.idToken);
+        navigate("/");
       })
       .catch((err) => {
         alert(err.message);
@@ -59,7 +59,7 @@ function Signup() {
             className="text-center mb-4"
             style={{ fontSize: "1.5rem" }}
           >
-            SignUp
+            Login
           </Card.Title>
           <Form onSubmit={hanldeSubmit}>
             <Form.Group className="mb-3" controlId="email">
@@ -84,27 +84,17 @@ function Signup() {
               />
             </Form.Group>
 
-            <Form.Group className="mb-4" controlId="cPassword">
-              <Form.Control
-                value={enteredConfirmPassword}
-                onChange={(e) => setEnteredConfirmpassword(e.target.value)}
-                required
-                type="password"
-                placeholder="Confirm Password"
-                style={{ borderRadius: "10px" }}
-              />
-            </Form.Group>
-
             <div className="d-grid">
               <Button
                 variant="primary"
                 type="submit"
-                style={{ borderRadius: "10px" }}
+                style={{ borderRadius: "10px", marginBottom: "10px" }}
               >
-                Sign up
+                Login
               </Button>
             </div>
           </Form>
+          <Link>Forget Password ?</Link>
         </Card.Body>
       </Card>
 
@@ -119,10 +109,7 @@ function Signup() {
         }}
       >
         <span style={{ color: "#6c757d" }}>
-          Have an account?{" "}
-          <Link to="/login" style={{ color: "#007bff" }}>
-            Login
-          </Link>
+          <Link to={"/signup"}>Don't have an account? Signup</Link>{" "}
         </span>
       </div>
     </Container>
