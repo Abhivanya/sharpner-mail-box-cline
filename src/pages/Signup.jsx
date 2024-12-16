@@ -9,8 +9,9 @@ function Signup() {
 
   const hanldeSubmit = (e) => {
     e.preventDefault();
-    if (enteredConfirmPassword === enteredPassword) {
+    if (enteredConfirmPassword !== enteredPassword) {
       alert("Both password are diffrent");
+      return;
     }
 
     fetch(
