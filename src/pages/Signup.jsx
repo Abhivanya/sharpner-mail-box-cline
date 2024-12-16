@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { Container, Card, Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
   const [enteredEmail, setEnteredEmail] = useState();
   const [enteredPassword, setEnteredPassword] = useState();
   const [enteredConfirmPassword, setEnteredConfirmpassword] = useState();
+  const navigate = useNavigate();
 
   const hanldeSubmit = (e) => {
     e.preventDefault();
-    if (enteredConfirmPassword === enteredPassword) {
+    if (enteredConfirmPassword !== enteredPassword) {
       alert("Both password are diffrent");
+      return;
     }
 
     fetch(
@@ -34,6 +36,7 @@ function Signup() {
         }
         console.log(res.email);
         alert("Singup successfully");
+        navigate("/");
         console.log(res.idToken);
       })
       .catch((err) => {
