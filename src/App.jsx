@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./components/layout/Header";
 import Signup from "./pages/Signup";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -8,13 +8,15 @@ import SendMail from "./pages/SendMail";
 import Inbox from "./pages/Inbox";
 import Sidebar from "./components/layout/Sidebar";
 import SentMails from "./pages/SentMails";
+import ViewEmail from "./components/ViewEmail";
 
 const App = () => {
+  const [unReadEmail, setUnreadEmail] = useState(0);
   return (
     <>
       <Header />
-      <div className="  flex  bg-red-400 ">
-        <Sidebar />
+      <div className="  flex  ">
+        <Sidebar totalUnreadEmail={unReadEmail} />
         <div>
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -23,8 +25,12 @@ const App = () => {
             <Route path="/" element={<Home />} />
 
             <Route path="/sendmail" element={<SendMail />} />
-            <Route path="/inbox" element={<Inbox />} />
+            <Route
+              path="/inbox"
+              element={<Inbox setUnreadEmail={setUnreadEmail} />}
+            />
             <Route path="/sentmails" element={<SentMails />} />
+            <Route path="/email/:type/:emailKey" element={<ViewEmail />} />
           </Routes>
         </div>
       </div>

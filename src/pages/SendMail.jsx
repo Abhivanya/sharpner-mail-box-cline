@@ -81,6 +81,7 @@ const SendMail = () => {
           timestmps: new Date().toString(),
           subject: subject,
           content: content,
+          read: false,
         }),
         headers: {
           "Content-Type": "application/json",
