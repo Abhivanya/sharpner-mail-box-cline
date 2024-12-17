@@ -3,9 +3,9 @@ import { Container, Card, Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
-  const [enteredEmail, setEnteredEmail] = useState();
-  const [enteredPassword, setEnteredPassword] = useState();
-  const [enteredConfirmPassword, setEnteredConfirmpassword] = useState();
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState("");
+  const [enteredConfirmPassword, setEnteredConfirmpassword] = useState("");
   const navigate = useNavigate();
 
   const hanldeSubmit = (e) => {
@@ -36,6 +36,10 @@ function Signup() {
         }
         console.log(res.email);
         alert("Singup successfully");
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ token: res.idToken, email: enteredEmail })
+        );
         navigate("/");
         console.log(res.idToken);
       })

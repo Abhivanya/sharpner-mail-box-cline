@@ -34,6 +34,10 @@ function Signup() {
         console.log(res.email);
         alert("Login successfully");
         console.log(res.idToken);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ token: res.idToken, email: enteredEmail })
+        );
         navigate("/");
       })
       .catch((err) => {
