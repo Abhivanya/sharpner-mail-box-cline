@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, ListGroup } from "react-bootstrap";
 import EmailListItem from "../components/EmailListItem";
 
 const Inbox = ({ setUnreadEmail }) => {
   const [inboxMail, setInboxMail] = useState();
+  const prevDataRef = useRef(null);
   const getEmail = () => {
     const { email: userEmail } = JSON.parse(localStorage.getItem("user"));
     const userId = userEmail.replace(".", "_");
@@ -13,12 +14,17 @@ const Inbox = ({ setUnreadEmail }) => {
         if (res.error) {
           throw new Error(res.error);
         }
-        setInboxMail(res);
+        if (res !== prevDataRef.current) {
+          prevDataRef.current = res;
+          setInboxMail(res);
+        }
       });
   };
 
   useEffect(() => {
-    getEmail();
+    const intervalId = setInterval(getEmail, 2000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
