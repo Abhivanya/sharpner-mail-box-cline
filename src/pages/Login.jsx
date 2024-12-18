@@ -1,49 +1,59 @@
 import React, { useState } from "react";
 import { Container, Card, Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useAuth } from "../hooks";
 
 function Signup() {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
+  const { authenticate } = useAuth();
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const hanldeSubmit = (e) => {
     e.preventDefault();
+    const loginURL =
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBgJdxOctDgkNgtoJPXFU1mTJsO4GuMGmM";
+    const res = authenticate(loginURL, enteredEmail, enteredPassword, password);
+    console.log(res);
 
-    fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBgJdxOctDgkNgtoJPXFU1mTJsO4GuMGmM",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          email: enteredEmail,
-          password: enteredPassword,
-          returnSecureToken: true,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((res) => {
-        console.log(res);
-        if (res.error) {
-          throw new Error(res.error);
-        }
-        console.log(res.email);
-        alert("Login successfully");
-        console.log(res.idToken);
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ token: res.idToken, email: enteredEmail })
-        );
-        navigate("/");
-      })
-      .catch((err) => {
-        alert(err.message);
-        console.log(err);
-      });
+    return;
+
+    // fetch(
+    //   "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBgJdxOctDgkNgtoJPXFU1mTJsO4GuMGmM",
+    //   {
+    //     method: "POST",
+    //     body: JSON.stringify({
+    //       email: enteredEmail,
+    //       password: enteredPassword,
+    //       returnSecureToken: true,
+    //     }),
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // )
+    //   .then((response) => response.json())
+    //   .then((res) => {
+    //     console.log(res);
+    //     if (res.error) {
+    //       throw new Error(res.error);
+    //     }
+    //     console.log(res.email);
+    //     alert("Login successfully");
+    //     console.log(res.idToken);
+    //     localStorage.setItem(
+    //       "user",
+    //       JSON.stringify({ token: res.idToken, email: enteredEmail })
+    //     );
+    //     navigate("/");
+    //   })
+    //   .catch((err) => {
+    //     alert(err.message);
+    //     console.log(err);
+    //   });
   };
 
   return (
